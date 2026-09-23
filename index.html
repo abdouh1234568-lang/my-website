@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anwar Shop</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      color: #222;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 18px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 14px;
+    }
+
+    .cart {
+      background: white;
+      color: #111;
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .hero {
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 50px 20px;
+      background:
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+        url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80")
+        center/cover;
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 19px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: white;
+      color: #111;
+      padding: 14px 28px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background: #ddd;
+    }
+
+    section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 70px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 34px;
+      margin-bottom: 12px;
+    }
+
+    .section-text {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .categories {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 35px;
+    }
+
+    .filter {
+      border: 1px solid #222;
+      background: white;
+      padding: 10px 18px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .filter.active,
+    .filter:hover {
+      background: #111;
+      color: white;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    }
+
+    .product img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+
+    .product h3 {
+      margin-bottom: 8px;
+    }
+
+    .product p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .buy {
+      width: 100%;
+      background: #111;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .buy:hover {
+      background: #333;
+    }
+
+    .about {
+      background: #111;
+      color: white;
+      max-width: none;
+      text-align: center;
+    }
+
+    .about p {
+      max-width: 700px;
+      margin: 15px auto;
+      line-height: 1.7;
+      color: #ddd;
+    }
+
+    footer {
+      background: #080808;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .cart-box {
+      position: fixed;
+      right: 15px;
+      bottom: 15px;
+      background: white;
+      width: 330px;
+      max-width: calc(100% - 30px);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 30px rgba(0,0,0,.25);
+      display: none;
+      z-index: 2000;
+    }
+
+    .cart-box h3 {
+      margin-bottom: 15px;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .cart-total {
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    .close-cart {
+      float: right;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .whatsapp {
+      display: block;
+      text-align: center;
+      background: #25D366;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 800px) {
+      .products {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 550px) {
+      nav a {
+        display: none;
+      }
+
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: 500px;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <nav>
+    <div class="logo">ANWAR SHOP</div>
+
+    <div>
+      <a href="#home">Home</a>
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+      <span class="cart" onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</span>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div>
+    <h1>Style for Every Wardrobe</h1>
+    <p>Discover the latest fashion at Anwar Shop.</p>
+
+    <!-- Shop Now now works correctly -->
+    <a href="#shop" class="btn">Shop Now</a>
+  </div>
+</section>
+
+<section id="shop">
+
+  <h2 class="section-title">Our Products</h2>
+  <p class="section-text">Choose your favorite style.</p>
+
+  <div class="categories">
+    <button class="filter active" onclick="filterProducts('all', this)">All</button>
+    <button class="filter" onclick="filterProducts('men', this)">Men</button>
+    <button class="filter" onclick="filterProducts('women', this)">Women</button>
+    <button class="filter" onclick="filterProducts('sale', this)">Sale</button>
+  </div>
+
+  <div class="products">
+
+    <div class="product" data-category="men">
+      <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80">
+      <div class="product-info">
+        <h3>Classic T-Shirt</h3>
+        <p>Comfortable everyday T-shirt.</p>
+        <div class="price">149 MAD</div>
+        <button class="buy" onclick="addToCart('Classic T-Shirt',149)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="women">
+      <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80">
+      <div class="product-info">
+        <h3>Fashion Outfit</h3>
+        <p>Modern style for every occasion.</p>
+        <div class="price">299 MAD</div>
+        <button class="buy" onclick="addToCart('Fashion Outfit',299)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="men">
+      <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=800&q=80">
+      <div class="product-info">
+        <h3>Denim Jacket</h3>
+        <p>Classic denim jacket.</p>
+        <div class="price">399 MAD</div>
+        <button class="buy" onclick="addToCart('Denim Jacket',399)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="women">
+      <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=800&q=80">
+      <div class="product-info">
+        <h3>Elegant Dress</h3>
+        <p>Elegant and comfortable design.</p>
+        <div class="price">349 MAD</div>
+        <button class="buy" onclick="addToCart('Elegant Dress',349)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="sale">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=80">
+      <div class="product-info">
+        <h3>Street Style</h3>
+        <p>Limited-time sale item.</p>
+        <div class="price">199 MAD</div>
+        <button class="buy" onclick="addToCart('Street Style',199)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <div class="product" data-category="sale">
+      <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80">
+      <div class="product-info">
+        <h3>Summer Look</h3>
+        <p>Fresh summer fashion.</p>
+        <div class="price">249 MAD</div>
+        <button class="buy" onclick="addToCart('Summer Look',249)">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="about" id="about">
+  <h2 class="section-title">About Anwar Shop</h2>
+  <p>
+    Welcome to Anwar Shop. We bring you modern fashion,
+    comfortable styles and great products for every wardrobe.
+  </p>
+</section>
+
+<footer>
+  <p>© 2026 Anwar Shop. All rights reserved.</p>
+</footer>
+
+<div class="cart-box" id="cartBox">
+  <span class="close-cart" onclick="closeCart()">✕</span>
+
+  <h3>Your Cart</h3>
+
+  <div id="cartItems">
+    Your cart is empty.
+  </div>
+
+  <div class="cart-total">
+    Total: <span id="cartTotal">0</span> MAD
+  </div>
+
+  <a id="whatsappOrder"
+     class="whatsapp"
+     href="#"
+     target="_blank">
+    Order on WhatsApp
+  </a>
+</div>
+
+<script>
+
+  let cart = [];
+
+  function addToCart(name, price) {
+
+    cart.push({
+      name: name,
+      price: price
+    });
+
+    updateCart();
+
+    alert(name + " added to cart!");
+  }
+
+  function updateCart() {
+
+    const count = document.getElementById("cartCount");
+    const items = document.getElementById("cartItems");
+    const total = document.getElementById("cartTotal");
+
+    count.textContent = cart.length;
+
+    if (cart.length === 0) {
+      items.innerHTML = "Your cart is empty.";
+      total.textContent = "0";
+      return;
+    }
+
+    let html = "";
+    let sum = 0;
+
+    cart.forEach(function(item, index) {
+
+      sum += item.price;
+
+      html += `
+        <div class="cart-item">
+          ${item.name} - ${item.price} MAD
+          <button onclick="removeItem(${index})"
+          style="float:right;border:0;background:none;cursor:pointer;">
+          ✕
+          </button>
+        </div>
+      `;
+    });
+
+    items.innerHTML = html;
+    total.textContent = sum;
+
+    let message = "Hello Anwar Shop!%0A%0AI want to order:%0A";
+
+    cart.forEach(function(item) {
+      message += "- " + item.name + " : " + item.price + " MAD%0A";
+    });
+
+    message += "%0ATotal: " + sum + " MAD";
+
+    /*
+      Replace the number below with your WhatsApp number.
+      Example Morocco: 2126XXXXXXXX
+    */
+
+    const phone = "212600000000";
+
+    document.getElementById("whatsappOrder").href =
+      "https://wa.me/" + phone + "?text=" + message;
+  }
+
+  function removeItem(index) {
+
+    cart.splice(index, 1);
+
+    updateCart();
+  }
+
+  function openCart() {
+
+    document.getElementById("cartBox").style.display = "block";
+  }
+
+  function closeCart() {
+
+    document.getElementById("cartBox").style.display = "none";
+  }
+
+  function filterProducts(category, button) {
+
+    const products = document.querySelectorAll(".product");
+    const filters = document.querySelectorAll(".filter");
+
+    filters.forEach(function(btn) {
+      btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    products.forEach(function(product) {
+
+      if (
+        category === "all" ||
+        product.dataset.category === category
+      ) {
+        product.style.display = "block";
+      } else {
+        product.style.display = "none";
+      }
+
+    });
+  }
+
+</script>
+
+</body>
+</html>
